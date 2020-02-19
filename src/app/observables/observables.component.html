@@ -1,1 +1,2 @@
-<p>observables works!</p>
+<button mat-raised-button color="primary" type="button" (click)="load()">Load addresses</button>
+<app-address-list [items]="items | async"></app-address-list>

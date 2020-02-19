@@ -1,0 +1,25 @@
+<mat-card class="dashboard-card">
+  <mat-card-header>
+    <mat-card-title>
+      {{item.company}}
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Expand</button>
+        <button mat-menu-item>Remove</button>
+      </mat-menu>
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{item.firstName}} {{item.lastName}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="dashboard-card-content">
+    <div><strong>Address: </strong></div>
+    <div>{{item.address}}</div>
+    <div>{{item.address2}}</div>
+    <div>{{item.postalCode}} {{item.city}}</div>
+    <div>{{item.state}}</div>
+    <div><strong>Shipping: </strong>{{item.shipping}}</div>
+  </mat-card-content>
+</mat-card>
