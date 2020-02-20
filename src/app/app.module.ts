@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
-import { reducers, metaReducers } from './reducers';
+import { metaReducers, reducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { InputOutputComponent } from './input-output/input-output.component';
@@ -32,6 +32,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { AddressEntryComponent } from './address-entry/address-entry.component';
 import { AddressListComponent } from './address-list/address-list.component';
+import { AddressesEffects } from './reducers/addresses/addresses.effects';
+import { LoadingEffects } from './reducers/loading/loading.effects';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import * as fromFormVisible from './reducers/form-visible/form-visible.reducer';
 
 @NgModule({
   declarations: [
@@ -68,7 +73,11 @@ import { AddressListComponent } from './address-list/address-list.component';
     MatCheckboxModule,
     ReactiveFormsModule,
     MatGridListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSnackBarModule,
+    EffectsModule.forFeature([AddressesEffects, LoadingEffects]),
+    MatProgressSpinnerModule,
+    StoreModule.forFeature(fromFormVisible.formVisibleFeatureKey, fromFormVisible.reducer)
   ],
   providers: [],
   bootstrap: [AppComponent]

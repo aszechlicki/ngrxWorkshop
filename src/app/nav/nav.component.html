@@ -20,6 +20,25 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+      <button class="tool-menu" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="toggleLoading()" type="button">
+          <mat-icon>loop</mat-icon>
+          <span>Toggle loading</span>
+        </button>
+        <button mat-menu-item (click)="loadAddresses()" type="button">
+          <mat-icon>cloud_download</mat-icon>
+          <span>Load addresses</span>
+        </button>
+        <button mat-menu-item (click)="clearStorage()" type="button">
+          <mat-icon>cloud_download</mat-icon>
+          <span>Clear storage</span>
+        </button>
+        <button mat-menu-item (click)="toggleFormVisibility()" type="button" role="menuitemcheckbox" class="mat-flat-button" [class.mat-primary]="isFormVisible | async">
+          <mat-icon>{{formIcon | async}}</mat-icon>
+          <span>Toggle form visibility</span>
+        </button>
+      </mat-menu>
       <span>NgWorkshop</span>
     </mat-toolbar>
     <router-outlet></router-outlet>

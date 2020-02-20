@@ -1,14 +1,18 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Address } from './address';
-import { delay, filter, scan, shareReplay, tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { delay, filter, mergeMap, scan, shareReplay, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { timer } from 'rxjs/internal/observable/timer';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { of } from 'rxjs/internal/observable/of';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private addressesSubject = new BehaviorSubject<Address>({
+  private counter = 1;
+  private addressesSubject = new BehaviorSubject<Address[]>([{
     company: 'Sii',
     firstName: 'Arkadiusz',
     lastName: 'Szechlicki',
@@ -18,23 +22,38 @@ export class DataService {
     state: 'AS',
     postalCode: '12345',
     shipping: 'free'
-  });
-  addressesList: Observable<Address[]> = this.addressesSubject.asObservable().pipe(
-    filter(it => !!it),
-    tap(val => console.log('tap', val)),
-    scan((acc, curr) => [...acc, curr], []),
-    tap(val => console.log('all', val)),
-    shareReplay(1)
-  );
+  }]);
+  addressesList: Observable<Address[]> = this.addressesSubject.asObservable();
 
-  constructor(private zone: NgZone) {
+  constructor() {
   }
 
   addAddress(item: Address) {
-    this.addressesSubject.next(item);
+    if (item.company !== 'Sii') {
+      return timer(10000).pipe(
+        mergeMap(() => throwError('Company is not Sii!'))
+      );
+    }
+
+    return of(item).pipe(delay(1000), tap(() => this.addressesSubject.next([...this.addressesSubject.value, item])));
   }
 
   loadAddresses() {
+    if (this.counter++ % 5 === 0) {
+      return timer(10000).pipe(
+        mergeMap(() => throwError('Api error'))
+      );
+    }
     return this.addressesList.pipe(delay(500));
+  }
+
+  removeAddress(item: Address) {
+    if (item.city === 'Bydgoszcz') {
+      return timer(10000).pipe(
+        mergeMap(() => throwError('We cant leave Bydgoszcz!'))
+      );
+    }
+
+    return of(item).pipe(delay(1000), tap(() => this.addressesSubject.next(this.addressesSubject.value.filter(it => it !== item))));
   }
 }

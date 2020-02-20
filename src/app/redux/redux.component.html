@@ -1,1 +1,3 @@
-<p>redux works!</p>
+<mat-spinner [diameter]="60" *ngIf="isLoading | async"></mat-spinner>
+<app-address [isVisible]="formVisible | async" (addressAdded)="addAddress($event)"></app-address>
+<app-address-list [items]="addresses | async"></app-address-list>
