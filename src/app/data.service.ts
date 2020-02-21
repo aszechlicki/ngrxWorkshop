@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Address } from "./address";
-import { delay, mergeMap, tap } from "rxjs/operators";
+import { delay, mergeMap, tap, shareReplay } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { timer } from "rxjs/internal/observable/timer";
